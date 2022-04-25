@@ -18,12 +18,16 @@ namespace APITestProduct.Services
 
         public async Task Add(User obj)
         {
+            if (obj == null) throw new Exception("User is invalid");
+
             _context.User.Add(obj);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int Id)
         {
+            if (Id == null || Id <= 0) throw new Exception("UserID is not valid");
+
             var itemToDelete = await _context.User.FindAsync(Id);
             if (itemToDelete == null)
                 throw new NullReferenceException();
@@ -35,6 +39,8 @@ namespace APITestProduct.Services
 
         public async Task<User> Get(int Id)
         {
+            if (Id == null || Id <= 0) throw new Exception("UserID is not valid");
+
             return await _context.User.FindAsync(Id);
         }
 
@@ -45,6 +51,10 @@ namespace APITestProduct.Services
 
         public async Task Update(User obj)
         {
+            if (obj == null) throw new Exception("User is invalid");
+
+            if (obj.Id == null || obj.Id <= 0) throw new Exception("UserID is not valid");
+
             var itemToUpdate = await _context.User.FindAsync(obj.Id);
             if(itemToUpdate == null)
                 throw new NullReferenceException();
